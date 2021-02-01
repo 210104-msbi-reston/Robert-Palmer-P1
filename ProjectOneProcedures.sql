@@ -1,5 +1,18 @@
 use ProjectOne
 
+-- Procedure - View Product Transit History
+create procedure pr_ProductTransitHistory
+(
+	@serialno int
+)
+as
+begin
+	select * from ProductTransitLog
+	where productSerialNo=@serialno
+end
+
+exec pr_ProductTransitHistory @serialno=35
+
 -- Procedure to Create Products
 create procedure pr_CreateProduct
 (
