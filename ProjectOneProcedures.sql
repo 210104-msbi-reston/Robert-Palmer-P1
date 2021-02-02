@@ -11,8 +11,6 @@ begin
 	where productSerialNo=@serialno
 end
 
-exec pr_ProductTransitHistory @serialno=35
-
 -- Procedure to Create Products
 create procedure pr_CreateProduct
 (
@@ -323,7 +321,7 @@ begin
 end */
 
 -- Procedure -- add product to warehouse if in same continent as Production House
-alter procedure pr_AddProductWarehouseInventory
+create procedure pr_AddProductWarehouseInventory
 (
 	@facilityno int,
 	@serialno int
