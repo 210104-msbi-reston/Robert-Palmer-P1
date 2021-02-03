@@ -1,5 +1,5 @@
 use ProjectOne
-
+use master
 -- Procedure - View Product Transit History
 create procedure pr_ProductTransitHistory
 (
@@ -38,68 +38,22 @@ begin
 	values(@facilityno,@serialno)
 end
 
--- Procedure to Add Product to Inventory - Warehouse
-/* create procedure pr_AddProductWarehouseInventory
+-- Procedures to Add Product to Inventory
+-- Distributors to Sub Distributors
+Create procedure pr_AddProductSubDistributorInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
-	set @shippingFacility = (select FacilityId from ProductionHouseInventory where ProductSerialNo=@serialno)
-	Declare @receivingFacility int
-	set @receivingFacility = (select ProductionHouseId from Warehouse where ID=@facilityno)
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from Distributor where ID=(select FacilityId from DistributorInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from SubDistributor where ID = @facilityno)
 	if(@shippingFacility <> @receivingFacility)
 	begin
-		Raiserror('Production House does not ship to Specified Warehouse Location',16,1)
-	end
-	else
-	begin
-		insert into WarehouseInventory
-		values(@facilityno,@serialno)
-	end
-end */
-
--- Procedure to Add Product to Inventory - Distributor
-/* alter procedure pr_AddProductDistributorInventory
-(
-	@facilityno int,
-	@serialno int
-)
-as
-begin
-	Declare @shippinglocation varchar(20)
-	set @shippinglocation = (select Country from Warehouse where ID = (select FacilityId from WarehouseInventory where ProductSerialNo=@serialno))
-	Declare @receivinglocation varchar(20)
-	set @receivinglocation = (select Country from Distributor where ID=@facilityno)
-	if(@shippinglocation <> @receivinglocation)
-	begin
-		Raiserror('Warehouse does not ship to Specified Distribution Location',16,1)
-	end
-	else
-	begin
-		insert into DistributorInventory
-		values(@facilityno,@serialno)
-	end 
-end */
-
-
--- Procedure to Add Product to Inventory - Sub-Distributor
-create procedure pr_AddProductSubDistributorInventory
-(
-	@facilityno int,
-	@serialno int
-)
-as
-begin
-	Declare @shippingFacility int
-	set @shippingFacility = (select FacilityId from DistributorInventory where ProductSerialNo=@serialno)
-	Declare @receivingFacility int
-	set @receivingFacility = (select DistributorId from SubDistributor where ID=@facilityno)
-	if(@shippingFacility <> @receivingFacility)
-	begin
-		Raiserror('Warehouse does not ship to Specified Distribution Location',16,1)
+		Raiserror('Sub-Distributor does not ship to Specified Channel Partner Location',16,1)
 	end
 	else
 	begin
@@ -109,17 +63,21 @@ begin
 end
 
 -- Procedure to Add Product to Inventory - Channel Partner
-create procedure pr_AddProductChannelPartnerInventory
+Create procedure pr_AddProductChannelPartnerInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from SubDistributor where ID=(select FacilityId from SubDistributorInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from ChannelPartner where ID = @facilityno)
+	/* Declare @shippingFacility int
 	set @shippingFacility = (select FacilityId from SubDistributorInventory where ProductSerialNo=@serialno)
 	Declare @receivingFacility int
-	set @receivingFacility = (select SubDistributorId from ChannelPartner where ID=@facilityno)
+	set @receivingFacility = (select SubDistributorId from ChannelPartner where ID=@facilityno) */
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Sub-Distributor does not ship to Specified Channel Partner Location',16,1)
@@ -132,17 +90,21 @@ begin
 end
 
 -- Procedure to Add Product to Inventory - Zone
-create procedure pr_AddProductZoneInventory
+Create procedure pr_AddProductZoneInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from ChannelPartner where ID=(select FacilityId from ChannelPartnerInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from Zone where ID = @facilityno)
+	/* Declare @shippingFacility int
 	set @shippingFacility = (select FacilityId from ChannelPartnerInventory where ProductSerialNo=@serialno)
 	Declare @receivingFacility int
-	set @receivingFacility = (select ChannelPartnerId from Zone where ID=@facilityno)
+	set @receivingFacility = (select ChannelPartnerId from Zone where ID=@facilityno)*/
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Channel Partner does not ship to Specified Zone Location',16,1)
@@ -155,17 +117,21 @@ begin
 end
 
 -- Procedure to Add Product to Inventory - Store
-create procedure pr_AddProductStoreInventory
+Create procedure pr_AddProductStoreInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from Zone where ID=(select FacilityId from ZoneInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from Store where ID = @facilityno)
+	/* Declare @shippingFacility int
 	set @shippingFacility = (select FacilityId from ZoneInventory where ProductSerialNo=@serialno)
 	Declare @receivingFacility int
-	set @receivingFacility = (select ZoneId from Store where ID=@facilityno)
+	set @receivingFacility = (select ZoneId from Store where ID=@facilityno) */
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Zone does not ship to Specified Store Location',16,1)
@@ -189,10 +155,14 @@ create procedure pr_ReturnProductZoneInventory
 )
 as
 begin
-	Declare @shippingFacility int
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from Store where ID=(select FacilityId from StoreInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from Zone where ID=@facilityno)
+	/* Declare @shippingFacility int
 	set @shippingFacility = (Select ZoneId from Store Where Id = (Select FacilityId from StoreInventory where ProductSerialNo=@serialno))
 	Declare @receivingFacility int
-	set @receivingFacility = (select ID from Zone where ID=@facilityno)
+	set @receivingFacility = (select ID from Zone where ID=@facilityno) */
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Store does not ship to Specified Zone Location',16,1)
@@ -205,17 +175,21 @@ begin
 end
 
 -- Procedure to return product from Zone to Channel Partner
-create procedure pr_ReturnProductChannelPartnerInventory
+Create procedure pr_ReturnProductChannelPartnerInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
-	set @shippingFacility = (Select ChannelPartnerId from Zone Where Id = (Select FacilityId from ZoneInventory where ProductSerialNo=@serialno))
-	Declare @receivingFacility int
-	set @receivingFacility = (select ID from ChannelPartner where ID=@facilityno)
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from Zone where ID=(select FacilityId from ZoneInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from ChannelPartner where ID=@facilityno)
+	/*Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from Zone where ID=(select FacilityId from ZoneInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from ChannelPartner where ID=@facilityno)*/
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Zone does not ship to Specified Channel Partner Location',16,1)
@@ -228,17 +202,21 @@ begin
 end
 
 -- Procedure to return Product from Channel Partner to Sub-Distribution
-create procedure pr_ReturnProductSubDistributorInventory
+Create procedure pr_ReturnProductSubDistributorInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from ChannelPartner where ID=(select FacilityId from ChannelPartnerInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from SubDistributor where ID=@facilityno)
+	/*Declare @shippingFacility int
 	set @shippingFacility = (Select SubDistributorId from ChannelPartner Where Id = (Select FacilityId from ChannelPartnerInventory where ProductSerialNo=@serialno))
 	Declare @receivingFacility int
-	set @receivingFacility = (select ID from SubDistributor where ID=@facilityno)
+	set @receivingFacility = (select ID from SubDistributor where ID=@facilityno)*/
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Channel Partner does not ship to Specified SubDistributor Location',16,1)
@@ -251,17 +229,21 @@ begin
 end
 
 -- Procedure to return Product from Sub-Distribution to Distribution
-create procedure pr_ReturnProductDistributorInventory
+Create procedure pr_ReturnProductDistributorInventory
 (
 	@facilityno int,
 	@serialno int
 )
 as
 begin
-	Declare @shippingFacility int
+	Declare @shippingFacility varchar(30)
+	set @shippingFacility = (select Country from SubDistributor where ID=(select FacilityId from SubDistributorInventory where ProductSerialNo=@serialno))
+	Declare @receivingFacility varchar(30)
+	set @receivingFacility = (select Country from Distributor where ID=@facilityno)
+	/* Declare @shippingFacility int
 	set @shippingFacility = (Select DistributorId from SubDistributor Where Id = (Select FacilityId from SubDistributorInventory where ProductSerialNo=@serialno))
 	Declare @receivingFacility int
-	set @receivingFacility = (select ID from Distributor where ID=@facilityno)
+	set @receivingFacility = (select ID from Distributor where ID=@facilityno) */
 	if(@shippingFacility <> @receivingFacility)
 	begin
 		Raiserror('Sub Distributor does not ship to Specified Distributor Location',16,1)
@@ -274,54 +256,9 @@ begin
 end
 
 -- Procedure to return Product from Distribution to Warehouse
-/* alter procedure pr_ReturnProductWarehouseInventory
-(
-	@facilityno int,
-	@serialno int
-)
-as
-begin
-	Declare @shippingLocation varchar(20)
-	set @shippingLocation = (select Country from Distributor where ID=(select FacilityId from DistributorInventory where ProductSerialNo=@serialno))
-	Declare @receivingLocation varchar(20)
-	set @receivingLocation = (select Country from Warehouse where ID=@facilityno)
-	if(@shippingLocation <> @receivingLocation)
-	begin
-		Raiserror('Distributor does not ship to Specified Warehouse Location',16,1)
-	end
-	else
-	begin
-		insert into WarehouseInventory
-		values(@facilityno,@serialno)
-	end
-end */
-
-
--- Procedure to return Product from Warehouse to Production House
-/* create procedure pr_ReturnProductProductionHouseInventory
-(
-	@facilityno int,
-	@serialno int
-)
-as
-begin
-	Declare @shippingFacility int
-	set @shippingFacility = (Select ProductionHouseId from Warehouse Where Id = (Select FacilityId from WarehouseInventory where ProductSerialNo=@serialno))
-	Declare @receivingFacility int
-	set @receivingFacility = (select ID from ProductionHouse where ID=@facilityno)
-	if(@shippingFacility <> @receivingFacility)
-	begin
-		Raiserror('Warehouse does not ship to Specified Production House Location',16,1)
-	end
-	else
-	begin
-		insert into ProductionHouseInventory
-		values(@facilityno,@serialno)
-	end
-end */
 
 -- Procedure -- add product to warehouse if in same continent as Production House
-create procedure pr_AddProductWarehouseInventory
+Create procedure pr_AddProductWarehouseInventory
 (
 	@facilityno int,
 	@serialno int
@@ -344,10 +281,7 @@ begin
 		values(@facilityno,@serialno)
 	end
 end
-exec pr_AddProductWarehouseInventory @facilityno = 2, @serialno=2
-select * from WarehouseInventory
-select * from ProductionHouseInventory
-select * from Product
+
 -- Add Product to Distribution if Country is the same
 create procedure pr_AddProductDistributorInventory
 (

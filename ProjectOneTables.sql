@@ -1,5 +1,4 @@
 -- Page to create all tables
-create database ProjectOne
 use ProjectOne
 
 -- Tables
@@ -31,7 +30,7 @@ create table Purchased
 -- Production House Table
 create table ProductionHouse
 (
-	ID int identity primary key,
+	ID int primary key,
 	Continent varchar(30),
 	constraint CHK_Continent check (Continent in ('Asia','Africa','North America','South America','Europe','Australia'))
 );
@@ -46,7 +45,7 @@ create table ProductionHouseInventory
 -- WareHouse Table
 create table Warehouse
 (
-	ID int identity primary key,
+	ID int primary key,
 	ProductionHouseId int foreign key references ProductionHouse(ID),
 	Country varchar(20),
 	Continent varchar(30),
@@ -64,7 +63,7 @@ create table WarehouseInventory
 -- Distributor Table
 create table Distributor
 (
-	ID int identity primary key,
+	ID int primary key,
 	WarehouseId int foreign key references Warehouse(ID),
 	Country varchar(20)
 );
@@ -80,7 +79,7 @@ create table DistributorInventory
 -- SubDistributor Table
 create table SubDistributor
 (
-	ID int identity primary key,
+	ID int primary key,
 	DistributorId int foreign key references Distributor(ID),
 	Country varchar(20)
 );
@@ -96,7 +95,7 @@ create table SubDistributorInventory
 -- ChannelPartner Table
 create table ChannelPartner
 (
-	ID int identity primary key,
+	ID int primary key,
 	SubDistributorId int foreign key references SubDistributor(ID),
 	Country varchar(20)
 );
@@ -112,7 +111,7 @@ create table ChannelPartnerInventory
 -- Zone Table
 create table Zone
 (
-	ID int identity primary key,
+	ID int primary key,
 	ChannelPartnerId int foreign key references ChannelPartner(ID),
 	Country varchar(20)
 );
@@ -128,7 +127,7 @@ create table ZoneInventory
 -- Store Table
 create table Store
 (
-	ID int identity primary key,
+	ID int primary key,
 	ZoneId int foreign key references Zone(ID),
 	Country varchar(20),
 	City varchar(20)

@@ -1,8 +1,8 @@
 use ProjectOne
-
+use master
 -- Views to display inventory of each location
 -- Production House
-alter view v_ProductionHouseInventory as
+create view v_ProductionHouseInventory as
 select FacilityId as [Facility ID],
 	   Continent as [Continent],
 	   ProductSerialNo as [Product Serial Number],
@@ -17,7 +17,7 @@ join Product
 on Product.SerialNo = ProductionHouseInventory.ProductSerialNo
 
 -- Warehouse
-alter view v_WarehouseInventory as
+create view v_WarehouseInventory as
 select FacilityId as [Facility ID],
 	   Country as [Country],
 	   ProductSerialNo as [Product Serial Number],
@@ -31,7 +31,7 @@ join Product
 on WarehouseInventory.ProductSerialNo = Product.SerialNo
 
 -- Distributor
-alter view v_DistributorInventory as
+create view v_DistributorInventory as
 select FacilityId as [Facility ID],
 	   Country as [Country],
 	   ProductSerialNo as [Product Serial Number],
@@ -45,7 +45,7 @@ join Product
 on DistributorInventory.ProductSerialNo = Product.SerialNo
 
 -- SubDistributor
-alter view v_SubDistributorInventory as
+create view v_SubDistributorInventory as
 select FacilityId as [Facility ID],
 	   Country as [Country],
 	   DistributorId as [Distributor Facility],
@@ -60,7 +60,7 @@ join Product
 on Product.SerialNo = SubDistributorInventory.ProductSerialNo
 
 -- Channel Partner
-alter view v_ChannelPartnerInventory as
+create view v_ChannelPartnerInventory as
 select FacilityId as [Facility ID],
 	   Country as [Country],
 	   SubDistributorId as [Sub Distributor Facility],
@@ -75,7 +75,7 @@ join Product
 on Product.SerialNo = ChannelPartnerInventory.ProductSerialNo
 
 -- Zone
-alter view v_ZoneInventory as
+create view v_ZoneInventory as
 select FacilityId as [Facility ID],
 	   Country as [Country],
 	   ChannelPartnerId as [Channel Partner Facility],
@@ -90,7 +90,7 @@ join Product
 on Product.SerialNo = ZoneInventory.ProductSerialNo
 
 -- Store
-alter view v_StoreInventory as
+create view v_StoreInventory as
 select FacilityId as [Facility ID],
 	   ZoneId as [Zone Facility ID],
 	   Country as [Country],
