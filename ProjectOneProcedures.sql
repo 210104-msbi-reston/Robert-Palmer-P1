@@ -434,6 +434,28 @@ begin
 	where SerialNo = @SerialNo
 end
 
+create procedure pr_Manufacture
+(
+	@serialno int
+)
+as
+begin
+	Declare @manufacturecost money
+	Declare @price money
+	Declare @continent varchar(30)
+	set @price = (select Price from Product where SerialNo=@serialno)
+	set @continent = (select Continent from ProductionHouse where ID=(select FacilityId from ProductionHouseInventory where ProductSerialNo=@serialno))
+	set @manufacturecost = (case
+			when @continent = 'Asia' then 50
+			when @continent = 'Africa' then 110
+			when @continent = 'North America' then 200
+			when @continent = 'Europe' then 75
+			when @continent = 'Australia' then 180
+			when @continent = 'South America' then 120
+		end)
+	update Product set Price= @price + @manufacturecost
+	where SerialNo=@serialno
+end
 
 create procedure pr_ReturnProductInventory
 (
