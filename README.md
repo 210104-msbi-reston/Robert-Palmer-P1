@@ -1,36 +1,42 @@
-# Robert-Palmer-P1
+# PROJECT NAME
+Device Manufacturer Database
 
-Project One
-Project Description
-Database application that 
+## Project Description
+This project provides an implementation to allow products to ship through a supply chain, starting from Production Houses to Stores. 
 
-Technologies Used
-SQL
-TSQL
-SQL Server
-SSIS
+## Technologies Used
 
-Features
-Views to join together information regarding a product, including price, location and Serial Number
-Use of Stored Procedures to perform DML operations on table records
-Triggers that automatically inserts into a log everytime an item ships to a location
-Transactions that execute stored procedures to ship an item to a new location / remove from previous location
-SSIS to load a list of Products from an excel source.
+* T-SQL
+* SQL Server Management Studio
+* SQL Server Integration Services
+* SQL
+
+## Features
+
+* Stored procedures to ship products to each facility down the supply chain
+* Triggers that add to log that keeps a history of where the product was shipped
+* Views that display product information and facility inventory
+* Utilitzes Integration Services to fetch from excel sources
 
 To-do list:
-Add more locations for different facilities for products to travel through
-Modify ER diagram to optimize a better relation between facilites
+* Reorganize facilites by relating them to location and not store number
+* add more data for both products and facilities
 
-Getting Started
-(include git clone command) (include all environment setup steps)
+## Getting Started
+   
+This project was created using SQL Server Management Studio 2016(with SQL Server Integration Services), and Visual Studio 2017.
 
-Be sure to include BOTH Windows and Unix command
-Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
+- In the command prompt, use this command to clone repo onto local repository:
+    git clone https://github.com/210104-msbi-reston/Robert-Palmer-P1.git
 
-All the code required to get started
-Images of what it should look like
-Usage
-Here, you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
+- Open SQL Server Management Studio
+- Highlight each table, trigger, procedure, and view, and click execute
+- Open Visual Studio (SSDT)
 
-License
-This project uses the following license: <license_name>.
+## Usage
+
+> The main functionality of the project is facilitated using the procedure pr_ShipProduct. You can specify which product to ship by providing its serial number, along with which facility to ship the product to by specifying the facility location.
+
+## License
+
+This project uses the following license: [<SQL Server Management Studio>](<https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15>).
