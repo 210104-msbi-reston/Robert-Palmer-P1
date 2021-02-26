@@ -42,4 +42,4 @@ https://github.com/210104-msbi-reston/Robert-Palmer-P1.git
 
 ## License
 
-This project uses the following license: [<SQL Server Management Studio>](<https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15>).
+This project uses the following license: [GNU](https://www.gnu.org/licenses/gpl-3.0.en.html).
