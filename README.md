@@ -20,7 +20,7 @@ This project provides an implementation to allow products to ship through a supp
 
 To-do list:
 * Reorganize facilites by relating them to location and not store number
-* add more data for both products and facilities
+* Add more data for both products and facilities
 
 ## Getting Started
    
@@ -32,6 +32,9 @@ This project was created using SQL Server Management Studio 2016(with SQL Server
 - Open SQL Server Management Studio
 - Highlight each table, trigger, procedure, and view, and click execute
 - Open Visual Studio (SSDT)
+- Locate the Team button located towards the top, and select Manage Connections.
+- In the Team Explorer Window, under Local Git Repositories, locate the clone option and enter
+https://github.com/210104-msbi-reston/Robert-Palmer-P1.git
 
 ## Usage
 
